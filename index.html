@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<title>STUDY FLOW｜勉強計画AI</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#182338;--muted:#758198;--line:#e7ebf2;--blue:#4263eb;--blue2:#edf1ff;--green:#16856b;--orange:#c47a20;--shadow:0 12px 34px rgba(28,44,78,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+header{padding:25px max(20px,calc((100% - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:850;letter-spacing:.12em;font-size:17px}.logo span{color:var(--blue)}.sub{font-size:12px;color:var(--muted);margin-top:4px}
+main{max-width:1100px;margin:auto;padding:8px 20px 60px}.hero{background:linear-gradient(120deg,#263d78,#4263eb 68%,#7c91f5);color:white;border-radius:24px;padding:27px 30px;margin-bottom:22px;box-shadow:var(--shadow)}
+.hero h1{font-size:clamp(23px,4vw,34px);margin:0 0 9px}.hero p{margin:0;color:#e4eaff;line-height:1.7;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:21px;box-shadow:var(--shadow);min-width:0}
+.card h2{font-size:17px;margin:0 0 5px}.desc{font-size:12px;color:var(--muted);margin:0 0 18px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}.field label,.day label{font-size:12px;font-weight:700;color:#526078}
+input,select{width:100%;border:1px solid #dfe5ef;background:#fff;border-radius:10px;padding:11px 12px;color:var(--ink);font:inherit;font-size:14px;outline:none}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #4263eb18}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-list{display:grid;gap:9px;margin-top:13px}
+.task{border:1px solid var(--line);border-radius:12px;padding:11px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.task strong{font-size:13px}.task small{display:block;color:var(--muted);margin-top:4px;font-size:11px}.del{border:0;background:#fff0f0;color:#bb4a4a;border-radius:8px;padding:7px 9px;cursor:pointer}
+.days{display:grid;grid-template-columns:1fr 1fr;gap:9px}.day{border:1px solid var(--line);padding:10px;border-radius:12px;display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center}.day b{font-size:13px}.day input{padding:8px;font-size:13px}
+.primary{background:var(--blue);color:white;border:0;border-radius:11px;padding:12px 17px;font-weight:750;font-size:14px;cursor:pointer;box-shadow:0 6px 15px #4263eb30}.secondary{background:var(--blue2);color:var(--blue);border:0;border-radius:10px;padding:10px 13px;font-weight:700;cursor:pointer}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.wide{grid-column:1/-1}
+.output{margin-top:20px;display:none}.output-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.output h2{margin:0;font-size:20px}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}.stat{background:#f7f8fc;border:1px solid var(--line);padding:13px;border-radius:13px}.stat small{color:var(--muted);font-size:11px}.stat b{display:block;font-size:21px;margin-top:4px}
+.notice{background:#fff8e9;border:1px solid #f3e1bc;color:#825b19;border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.6;margin-bottom:13px}
+.dayplan{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}.dayhead{display:flex;justify-content:space-between;align-items:center;background:#f8f9fd;padding:12px 15px}.dayhead b{font-size:14px}.dayhead span{font-size:11px;color:var(--muted)}
+.planitem{padding:11px 15px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}.planitem input{width:17px;height:17px;accent-color:var(--blue)}.planitem div{flex:1}.planitem strong{font-size:13px}.planitem small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.done strong{text-decoration:line-through;color:#9aa3b4}
+.empty{color:var(--muted);font-size:13px;padding:16px;text-align:center}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 10px}
+@media(max-width:720px){header{padding:18px 17px}main{padding:5px 14px 40px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.hero{padding:22px}.days{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr 1fr}.card{padding:17px}}
+</style>
+</head>
+<body>
+<header><div><div class="logo">STUDY <span>FLOW</span></div><div class="sub">期限から逆算する、毎日の学習プランナー</div></div><button class="secondary" onclick="resetAll()">リセット</button></header>
+<main>
+<section class="hero"><h1>今日やることを、迷わない。</h1><p>課題・締め切り・勉強できる時間を登録すると、残りの量から毎日の学習目標を自動で組み立てます。</p></section>
+<div class="grid">
+<section class="card">
+<h2>01　課題・目標を登録</h2><p class="desc">締め切りと残りの量を入力してください。</p>
+<div class="field"><label>課題名</label><input id="name" placeholder="例：青チャート 数学Ⅱ"></div>
+<div class="row">
+<div class="field"><label>締め切り</label><input id="deadline" type="date"></div>
+<div class="field"><label>優先度</label><select id="priority"><option value="1">通常</option><option value="1.25">高い</option><option value="1.5">最優先</option></select></div>
+</div>
+<div class="row">
+<div class="field"><label>全体の量</label><input id="total" type="number" min="1" placeholder="例：120"></div>
+<div class="field"><label>単位</label><input id="unit" placeholder="例：問 / ページ / 単語"></div>
+</div>
+<div class="row">
+<div class="field"><label>完了した量</label><input id="completed" type="number" min="0" value="0"></div>
+<div class="field"><label>1単位にかかる時間（分）</label><input id="minutes" type="number" min="1" value="10"></div>
+</div>
+<button class="primary" onclick="addTask()">＋ 課題を追加</button>
+<div id="taskList" class="task-list"><div class="empty">まだ課題が登録されていません。</div></div>
+</section>
+<section class="card">
+<h2>02　1週間の予定を設定</h2><p class="desc">各曜日に勉強へ使える時間を入力してください。0時間の日も設定できます。</p>
+<div class="days" id="days"></div>
+<div class="actions"><button class="secondary" onclick="copyWeekday()">平日を土日にコピー</button><button class="secondary" onclick="copyWeekend()">土日を平日にコピー</button></div>
+<div class="field" style="margin-top:16px"><label>1日の勉強時間の上限（時間）</label><input id="cap" type="number" min="0.5" max="16" step="0.5" value="5"></div>
+</section>
+<section class="card wide">
+<h2>03　学習計画を自動作成</h2><p class="desc">登録した課題の残量・期限・優先度と、曜日ごとの勉強可能時間から配分します。</p>
+<div class="actions"><button class="primary" onclick="generate()">今日からの計画を作成する</button><button class="secondary" onclick="saveData()">この設定を保存</button></div>
+<div id="message" class="desc" style="margin:12px 0 0">設定はこのブラウザ内に保存できます。</div>
+</section>
+</div>
+<section class="card output" id="output">
+<div class="output-head"><div><h2>あなたの学習プラン</h2><p class="desc" style="margin:5px 0 0">完了した項目にチェックを入れると進捗に反映されます。</p></div><button class="secondary" onclick="generate()">再計算</button></div>
+<div class="summary" id="summary"></div><div id="warnings"></div><div id="plans"></div>
+</section>
+<footer>STUDY FLOW · まずは計画を立て、進捗に合わせて調整しよう。</footer>
+</main>
+<script>
+const dayNames=['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
+let tasks=[], plan=[];
+const $=id=>document.getElementById(id);
+function initDays(){
+ const d=[['08:00','21:00',3],['17:00','22:00',3],['17:00','22:00',3],['17:00','22:00',3],['17:00','22:00',3],['17:00','22:00',4],['09:00','21:00',6]];
+ $('days').innerHTML=dayNames.map((n,i)=>`<div class="day"><b>${n}</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div><input aria-label="${n}の開始時刻" id="t${i}" type="time" value="${d[i][0]}"><small style="font-size:10px;color:#8791a4">開始時刻</small></div><div><input aria-label="${n}の勉強可能時間" id="h${i}" type="number" min="0" max="16" step=".5" value="${d[i][2]}" placeholder="時間"><small style="font-size:10px;color:#8791a4">勉強時間（h）</small></div></div></div>`).join('');
+}
+function addTask(){
+ const name=$('name').value.trim(), deadline=$('deadline').value, total=Number($('total').value), unit=$('unit').value.trim()||'個', completed=Number($('completed').value||0), minutes=Number($('minutes').value), priority=Number($('priority').value);
+ if(!name||!deadline||!total||total<1||!minutes||completed<0||completed>total){alert('課題名・締め切り・全体の量・所要時間を正しく入力してください。');return}
+ if(new Date(deadline+'T23:59:00')<new Date(new Date().toDateString())){alert('締め切りは今日以降に設定してください。');return}
+ tasks.push({id:Date.now()+Math.random(),name,deadline,total,unit,completed,minutes,priority});$('name').value='';$('total').value='';$('unit').value='';$('completed').value='0';renderTasks();saveData(false);
+}
+function renderTasks(){
+ $('taskList').innerHTML=tasks.length?tasks.map(t=>`<div class="task"><div><strong>${esc(t.name)}</strong><small>期限 ${t.deadline} · 残り ${Math.max(0,t.total-t.completed)}${esc(t.unit)} · 約${Math.round((t.total-t.completed)*t.minutes/60*10)/10}時間</small></div><button class="del" onclick="removeTask('${t.id}')">削除</button></div>`).join(''):'<div class="empty">まだ課題が登録されていません。</div>';
+}
+function removeTask(id){tasks=tasks.filter(t=>String(t.id)!==String(id));renderTasks();saveData(false)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function getHours(i){return Math.min(16,Math.max(0,Number($('h'+i).value)||0),Number($('cap').value)||16)}
+function copyWeekday(){let v=$('h1').value;[2,3,4,5].forEach(i=>$('h'+i).value=v)}
+function copyWeekend(){let a=$('h0').value,b=$('h6').value;$('h1').value=a;$('h2').value=a;$('h3').value=a;$('h4').value=b;$('h5').value=b}
+function generate(){
+ if(!tasks.length){alert('先に課題を1つ以上登録してください。');return}
+ const today=new Date();today.setHours(0,0,0,0);
+ const active=tasks.filter(t=>t.completed<t.total);
+ if(!active.length){alert('登録した課題はすべて完了しています！');return}
+ const horizon=Math.min(90,Math.max(...active.map(t=>Math.ceil((new Date(t.deadline+'T23:59:00')-today)/86400000)))+1);
+ let days=[];
+ for(let k=0;k<horizon;k++){let date=new Date(today);date.setDate(today.getDate()+k);let h=getHours(date.getDay());days.push({date,h,start:$('t'+date.getDay()).value||'17:00',items:[]})}
+ const warnings=[];
+ active.forEach(t=>{
+   const last=Math.floor((new Date(t.deadline+'T23:59:00')-today)/86400000);
+   if(last<0){warnings.push(`${t.name}：締め切りを過ぎています。期限を見直してください。`);return}
+   const available=days.slice(0,last+1).filter(d=>d.h>0);
+   if(!available.length){warnings.push(`${t.name}：締め切りまでに勉強できる日が設定されていません。`);return}
+   const units=t.total-t.completed, totalMinutes=units*t.minutes;
+   const weights=available.map((d,i)=>Math.max(.35,1-(i/Math.max(1,available.length-1))*.12));
+   const sum=weights.reduce((a,b)=>a+b,0);
+   let assigned=0;
+   available.forEach((d,i)=>{
+     let mins=i===available.length-1?totalMinutes-assigned:Math.round(totalMinutes*weights[i]/sum);
+     assigned+=mins;
+     d.items.push({taskId:t.id,name:t.name,minutes:mins,units:Math.max(0,Math.round(mins/t.minutes)),unit:t.unit,priority:t.priority});
+   });
+ });
+ // Keep each day's total within available capacity by scaling that day's allocation; show overload warnings.
+ days.forEach(d=>{
+   const total=d.items.reduce((s,x)=>s+x.minutes,0), cap=d.h*60;
+   if(total>cap&&cap>0){
+     d.items.forEach(x=>{x.minutes=Math.floor(x.minutes*cap/total);x.units=Math.floor(x.minutes/(active.find(t=>t.id===x.taskId)?.minutes||1))});
+   }
+ });
+ const totalHours=active.reduce((s,t)=>s+(t.total-t.completed)*t.minutes/60,0);
+ const availableHours=days.reduce((s,d)=>s+d.h,0);
+ if(totalHours>availableHours)warnings.push(`必要な勉強時間は約${totalHours.toFixed(1)}時間、設定した期間内の勉強可能時間は約${availableHours.toFixed(1)}時間です。期限までに終わらない可能性があります。`);
+ $('summary').innerHTML=`<div class="stat"><small>残りの学習量</small><b>${totalHours.toFixed(1)}h</b></div><div class="stat"><small>計画期間</small><b>${horizon}日</b></div><div class="stat"><small>勉強可能時間</small><b>${availableHours.toFixed(1)}h</b></div>`;
+ $('warnings').innerHTML=warnings.map(w=>`<div class="notice">⚠ ${esc(w)}</div>`).join('');
+ $('plans').innerHTML=days.map((d,idx)=>{
+   const date=d.date, label=`${date.getMonth()+1}/${date.getDate()}（${'日月火水木金土'[date.getDay()]}）`;
+   const sum=d.items.reduce((s,x)=>s+x.minutes,0);
+   return `<div class="dayplan"><div class="dayhead"><b>${idx===0?'今日 · ':''}${label}</b><span>${(sum/60).toFixed(1)}h / 勉強可能 ${(d.h).toFixed(1)}h</span></div>${d.items.length?d.items.map((x,i)=>`<label class="planitem"><input type="checkbox" onchange="completeItem(this,'${x.taskId}',${x.units})"><div><strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong><small>${slotLabel(d,i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small></div></label>`).join(''):'<div class="empty">休息日・予備日</div>'}</div>`
+ }).join('');
+ $('output').style.display='block';plan=days;saveData(false);
+}
+function slotLabel(day,index){
+ const base=(day.start||'17:00').split(':').map(Number);
+ let mins=base[0]*60+base[1]+day.items.slice(0,index).reduce((s,x)=>s+x.minutes,0);
+ const end=mins+day.items[index].minutes;
+ const fmt=n=>String(Math.floor(n/60)%24).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+ return fmt(mins)+'〜'+fmt(end);
+}
+function completeItem(box,id,units){
+ if(!box.checked)return;
+ const t=tasks.find(t=>String(t.id)===String(id));if(t){t.completed=Math.min(t.total,t.completed+units);renderTasks();saveData(false);box.parentElement.classList.add('done');box.disabled=true}
+}
+function saveData(show=true){
+ const data={tasks,days:dayNames.map((_,i)=>({hours:Number($('h'+i).value),start:$('t'+i).value})),cap:$('cap').value};
+ localStorage.setItem('studyflow-data',JSON.stringify(data));
+ if(show)$('message').textContent='このブラウザに設定を保存しました。';
+}
+function loadData(){
+ initDays();const raw=localStorage.getItem('studyflow-data');if(!raw)return;
+ try{const d=JSON.parse(raw);tasks=d.tasks||[];(d.days||[]).forEach((v,i)=>{if($('h'+i)){ $('h'+i).value=typeof v==='object'?v.hours:v; if(typeof v==='object'&&v.start)$('t'+i).value=v.start; }});if(d.cap)$('cap').value=d.cap;renderTasks()}catch(e){}
+}
+function resetAll(){if(confirm('登録内容をすべて削除しますか？')){localStorage.removeItem('studyflow-data');tasks=[];initDays();renderTasks();$('output').style.display='none'}}
+loadData();
+</script>
+</body></html>
