@@ -2,164 +2,1151 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f7fb">
-<title>STUDY FLOW｜勉強計画AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>study-flow</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--ink:#182338;--muted:#758198;--line:#e7ebf2;--blue:#4263eb;--blue2:#edf1ff;--green:#16856b;--orange:#c47a20;--shadow:0 12px 34px rgba(28,44,78,.07)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
-header{padding:25px max(20px,calc((100% - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo{font-weight:850;letter-spacing:.12em;font-size:17px}.logo span{color:var(--blue)}.sub{font-size:12px;color:var(--muted);margin-top:4px}
-main{max-width:1100px;margin:auto;padding:8px 20px 60px}.hero{background:linear-gradient(120deg,#263d78,#4263eb 68%,#7c91f5);color:white;border-radius:24px;padding:27px 30px;margin-bottom:22px;box-shadow:var(--shadow)}
-.hero h1{font-size:clamp(23px,4vw,34px);margin:0 0 9px}.hero p{margin:0;color:#e4eaff;line-height:1.7;font-size:14px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:21px;box-shadow:var(--shadow);min-width:0}
-.card h2{font-size:17px;margin:0 0 5px}.desc{font-size:12px;color:var(--muted);margin:0 0 18px}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}.field label,.day label{font-size:12px;font-weight:700;color:#526078}
-input,select{width:100%;border:1px solid #dfe5ef;background:#fff;border-radius:10px;padding:11px 12px;color:var(--ink);font:inherit;font-size:14px;outline:none}
-input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #4263eb18}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-list{display:grid;gap:9px;margin-top:13px}
-.task{border:1px solid var(--line);border-radius:12px;padding:11px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center}
-.task strong{font-size:13px}.task small{display:block;color:var(--muted);margin-top:4px;font-size:11px}.del{border:0;background:#fff0f0;color:#bb4a4a;border-radius:8px;padding:7px 9px;cursor:pointer}
-.days{display:grid;grid-template-columns:1fr 1fr;gap:9px}.day{border:1px solid var(--line);padding:10px;border-radius:12px;display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:center}.day b{font-size:13px}.day input{padding:8px;font-size:13px}
-.primary{background:var(--blue);color:white;border:0;border-radius:11px;padding:12px 17px;font-weight:750;font-size:14px;cursor:pointer;box-shadow:0 6px 15px #4263eb30}.secondary{background:var(--blue2);color:var(--blue);border:0;border-radius:10px;padding:10px 13px;font-weight:700;cursor:pointer}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.wide{grid-column:1/-1}
-.output{margin-top:20px;display:none}.output-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.output h2{margin:0;font-size:20px}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}.stat{background:#f7f8fc;border:1px solid var(--line);padding:13px;border-radius:13px}.stat small{color:var(--muted);font-size:11px}.stat b{display:block;font-size:21px;margin-top:4px}
-.notice{background:#fff8e9;border:1px solid #f3e1bc;color:#825b19;border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.6;margin-bottom:13px}
-.dayplan{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}.dayhead{display:flex;justify-content:space-between;align-items:center;background:#f8f9fd;padding:12px 15px}.dayhead b{font-size:14px}.dayhead span{font-size:11px;color:var(--muted)}
-.planitem{padding:11px 15px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}.planitem input{width:17px;height:17px;accent-color:var(--blue)}.planitem div{flex:1}.planitem strong{font-size:13px}.planitem small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.done strong{text-decoration:line-through;color:#9aa3b4}
-.empty{color:var(--muted);font-size:13px;padding:16px;text-align:center}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 10px}
-@media(max-width:720px){header{padding:18px 17px}main{padding:5px 14px 40px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.hero{padding:22px}.days{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr 1fr}.card{padding:17px}}
+:root {
+  --bg: #0a0a0a;
+  --card: #161616;
+  --card2: #1c1c1c;
+  --ink: #f2f2f2;
+  --muted: #8a8a8a;
+  --line: #2a2a2a;
+  --accent: #e8e4d9;
+  --accent-text: #1a1a1a;
+  --green: #6b9b7a;
+  --red: #c45c5c;
+  --radius: 18px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Header ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  padding: 12px 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid transparent;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1f1f1f;
+  border: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.btn-icon svg { width: 16px; height: 16px; }
+.app-name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.header-center {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  flex: 1;
+}
+.header-right { width: 36px; } /* spacer */
+
+/* ===== Main content ===== */
+.main {
+  padding: 8px 16px 110px;
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+}
+.view { display: none; }
+.view.active { display: block; animation: fadeIn .22s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 8px 0 18px;
+  color: var(--ink);
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 22px;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  margin-bottom: 12px;
+}
+.card-soft {
+  background: var(--card2);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+/* ===== Empty states ===== */
+.empty-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+}
+.empty-card h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.empty-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+  font-family: inherit;
+}
+.btn:active { transform: scale(0.97); opacity: 0.85; }
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: 12px 20px;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 11px 16px;
+  width: 100%;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+.btn-ghost:last-child { margin-bottom: 0; }
+.btn-text {
+  background: transparent;
+  color: var(--muted);
+  padding: 10px;
+  font-size: 13px;
+  width: 100%;
+  text-align: center;
+}
+.btn-full { width: 100%; }
+
+/* ===== Form ===== */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.field input, .field select {
+  width: 100%;
+  background: #111;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: #555;
+}
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ===== Goal list ===== */
+.goal-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.goal-item .info { flex: 1; min-width: 0; }
+.goal-item .name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.goal-item .meta {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.goal-item .del {
+  background: transparent;
+  border: none;
+  color: var(--red);
+  font-size: 12px;
+  padding: 6px 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ===== Today stats ===== */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.stat-box small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.stat-box b {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* ===== Day plan ===== */
+.day-block {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.day-head {
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+.day-head b { font-size: 14px; font-weight: 600; }
+.day-head span { font-size: 12px; color: var(--muted); }
+.plan-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.plan-item:last-child { border-bottom: none; }
+.plan-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+}
+.plan-item .text { flex: 1; }
+.plan-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.plan-item small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.plan-item.done strong {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.plan-empty {
+  padding: 20px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ===== Schedule (予定) ===== */
+.week-summary {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.week-summary .status {
+  color: var(--muted);
+  font-weight: 500;
+}
+.action-list { margin-bottom: 28px; }
+
+.day-section-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 20px 0 10px;
+  font-weight: 500;
+}
+.day-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.day-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.day-card-head .day-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+.day-card-head .status {
+  font-size: 13px;
+  color: var(--muted);
+}
+.day-card .no-slot {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 8px 0 12px;
+}
+.slot-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+.slot-row .field { margin-bottom: 0; }
+.slot-row .field label { font-size: 11px; }
+.slot-row input {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.btn-remove-slot {
+  background: transparent;
+  border: none;
+  color: var(--red);
+  font-size: 18px;
+  padding: 8px;
+  cursor: pointer;
+  line-height: 1;
+}
+.btn-add-slot {
+  width: 100%;
+  background: #222;
+  border: 1px dashed #3a3a3a;
+  color: var(--muted);
+  border-radius: 12px;
+  padding: 11px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.total-hours-badge {
+  display: inline-block;
+  background: #1f2a1f;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+/* ===== Notice / warning ===== */
+.notice {
+  background: #1f1a12;
+  border: 1px solid #3a3220;
+  color: #c9a86c;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+/* ===== Bottom Tab Bar ===== */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0f0f0f;
+  border-top: 1px solid #1e1e1e;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 calc(8px + var(--safe-bottom));
+  z-index: 100;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 0;
+  font-family: inherit;
+}
+.tab.active { color: var(--ink); }
+.tab svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.6;
+}
+.tab.active svg { stroke-width: 2; }
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #141414;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 22px 22px 0 0;
+  padding: 24px 20px calc(28px + var(--safe-bottom));
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp .28s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.modal-actions .btn { flex: 1; padding: 14px; }
+
+/* ===== Utilities ===== */
+.hidden { display: none !important; }
+.text-muted { color: var(--muted); }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
 </style>
 </head>
 <body>
-<header><div><div class="logo">STUDY <span>FLOW</span></div><div class="sub">期限から逆算する、毎日の学習プランナー</div></div><button class="secondary" onclick="resetAll()">リセット</button></header>
-<main>
-<section class="hero"><h1>今日やることを、迷わない。</h1><p>課題・締め切り・勉強できる時間を登録すると、残りの量から毎日の学習目標を自動で組み立てます。</p></section>
-<div class="grid">
-<section class="card">
-<h2>01　課題・目標を登録</h2><p class="desc">締め切りと残りの量を入力してください。</p>
-<div class="field"><label>課題名</label><input id="name" placeholder="例：青チャート 数学Ⅱ"></div>
-<div class="row">
-<div class="field"><label>締め切り</label><input id="deadline" type="date"></div>
-<div class="field"><label>優先度</label><select id="priority"><option value="1">通常</option><option value="1.25">高い</option><option value="1.5">最優先</option></select></div>
-</div>
-<div class="row">
-<div class="field"><label>全体の量</label><input id="total" type="number" min="1" placeholder="例：120"></div>
-<div class="field"><label>単位</label><input id="unit" placeholder="例：問 / ページ / 単語"></div>
-</div>
-<div class="row">
-<div class="field"><label>完了した量</label><input id="completed" type="number" min="0" value="0"></div>
-<div class="field"><label>1単位にかかる時間（分）</label><input id="minutes" type="number" min="1" value="10"></div>
-</div>
-<button class="primary" onclick="addTask()">＋ 課題を追加</button>
-<div id="taskList" class="task-list"><div class="empty">まだ課題が登録されていません。</div></div>
-</section>
-<section class="card">
-<h2>02　1週間の予定を設定</h2><p class="desc">各曜日に勉強へ使える時間を入力してください。0時間の日も設定できます。</p>
-<div class="days" id="days"></div>
-<div class="actions"><button class="secondary" onclick="copyWeekday()">平日を土日にコピー</button><button class="secondary" onclick="copyWeekend()">土日を平日にコピー</button></div>
-<div class="field" style="margin-top:16px"><label>1日の勉強時間の上限（時間）</label><input id="cap" type="number" min="0.5" max="16" step="0.5" value="5"></div>
-</section>
-<section class="card wide">
-<h2>03　学習計画を自動作成</h2><p class="desc">登録した課題の残量・期限・優先度と、曜日ごとの勉強可能時間から配分します。</p>
-<div class="actions"><button class="primary" onclick="generate()">今日からの計画を作成する</button><button class="secondary" onclick="saveData()">この設定を保存</button></div>
-<div id="message" class="desc" style="margin:12px 0 0">設定はこのブラウザ内に保存できます。</div>
-</section>
-</div>
-<section class="card output" id="output">
-<div class="output-head"><div><h2>あなたの学習プラン</h2><p class="desc" style="margin:5px 0 0">完了した項目にチェックを入れると進捗に反映されます。</p></div><button class="secondary" onclick="generate()">再計算</button></div>
-<div class="summary" id="summary"></div><div id="warnings"></div><div id="plans"></div>
-</section>
-<footer>STUDY FLOW · まずは計画を立て、進捗に合わせて調整しよう。</footer>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-left">
+    <button class="btn-icon" onclick="confirmReset()" aria-label="リセット">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <span class="app-name">study-flow</span>
+  </div>
+  <div class="header-center" id="headerDate"></div>
+  <div class="header-right"></div>
+</header>
+
+<main class="main">
+
+  <!-- ===== 今日 ===== -->
+  <section class="view active" id="view-today">
+    <h1 class="page-title">今日やる分</h1>
+
+    <div id="todayContent">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <!-- ===== 目標 ===== -->
+  <section class="view" id="view-goals">
+    <h1 class="page-title">目標</h1>
+    <p class="section-desc">期限と、残っている量。終わった分は今日の画面から記録できます。</p>
+
+    <div id="goalsList"></div>
+
+    <button class="btn btn-primary btn-full mt-16" onclick="openGoalModal()">＋ 目標を追加</button>
+  </section>
+
+  <!-- ===== 予定 ===== -->
+  <section class="view" id="view-schedule">
+    <h1 class="page-title">勉強できる時間</h1>
+    <p class="section-desc">曜日ごとの、勉強できる時間。ノルマは期限までの空きの割合で割るので、長い日は多く、短い日は少なくなります。</p>
+
+    <div class="week-summary" id="weekSummary">1週間の空き <span class="status">未設定</span></div>
+
+    <div class="action-list">
+      <button class="btn btn-ghost" onclick="copyWeekday()">平日を月曜に揃える</button>
+      <button class="btn btn-ghost" onclick="copyWeekend()">休日を土曜に揃える</button>
+      <button class="btn btn-ghost" onclick="fillExample()">例を入れる</button>
+      <button class="btn btn-text" onclick="clearAllSlots()">全部消す</button>
+    </div>
+
+    <div class="day-section-label">平日</div>
+    <div id="weekdayList"></div>
+
+    <div class="day-section-label">休日</div>
+    <div id="weekendList"></div>
+  </section>
+
 </main>
+
+<!-- Bottom Tab Bar -->
+<nav class="tabbar">
+  <button class="tab active" data-view="today" onclick="switchTab('today')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    今日
+  </button>
+  <button class="tab" data-view="goals" onclick="switchTab('goals')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+    目標
+  </button>
+  <button class="tab" data-view="schedule" onclick="switchTab('schedule')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    予定
+  </button>
+</nav>
+
+<!-- Goal Modal -->
+<div class="modal-overlay" id="goalModal">
+  <div class="modal">
+    <h2 id="modalTitle">目標を追加</h2>
+    <div class="field">
+      <label>目標名</label>
+      <input id="g-name" placeholder="例：英単語2000語" autocomplete="off">
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>締め切り</label>
+        <input id="g-deadline" type="date">
+      </div>
+      <div class="field">
+        <label>優先度</label>
+        <select id="g-priority">
+          <option value="1">通常</option>
+          <option value="1.25">高い</option>
+          <option value="1.5">最優先</option>
+        </select>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>全体の量</label>
+        <input id="g-total" type="number" min="1" placeholder="例：2000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label>単位</label>
+        <input id="g-unit" placeholder="語 / 問 / ページ">
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>完了した量</label>
+        <input id="g-completed" type="number" min="0" value="0" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label>1単位あたり（分）</label>
+        <input id="g-minutes" type="number" min="1" value="5" inputmode="numeric">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" style="margin:0" onclick="closeGoalModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveGoal()">保存</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const dayNames=['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
-let tasks=[], plan=[];
-const $=id=>document.getElementById(id);
-function initDays(){
- const d=[['08:00','21:00',3],['17:00','22:00',3],['17:00','22:00',3],['17:00','22:00',3],['17:00','22:00',3],['17:00','22:00',4],['09:00','21:00',6]];
- $('days').innerHTML=dayNames.map((n,i)=>`<div class="day"><b>${n}</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div><input aria-label="${n}の開始時刻" id="t${i}" type="time" value="${d[i][0]}"><small style="font-size:10px;color:#8791a4">開始時刻</small></div><div><input aria-label="${n}の勉強可能時間" id="h${i}" type="number" min="0" max="16" step=".5" value="${d[i][2]}" placeholder="時間"><small style="font-size:10px;color:#8791a4">勉強時間（h）</small></div></div></div>`).join('');
+const dayNames = ['日曜','月曜','火曜','水曜','木曜','金曜','土曜'];
+const dayNamesFull = ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
+
+let tasks = [];
+let schedule = Array.from({length:7}, () => []); // array of {start, end} per day
+let editingId = null;
+
+const $ = id => document.getElementById(id);
+
+/* ===== Init ===== */
+function init() {
+  updateHeaderDate();
+  loadData();
+  renderSchedule();
+  renderGoals();
+  renderToday();
 }
-function addTask(){
- const name=$('name').value.trim(), deadline=$('deadline').value, total=Number($('total').value), unit=$('unit').value.trim()||'個', completed=Number($('completed').value||0), minutes=Number($('minutes').value), priority=Number($('priority').value);
- if(!name||!deadline||!total||total<1||!minutes||completed<0||completed>total){alert('課題名・締め切り・全体の量・所要時間を正しく入力してください。');return}
- if(new Date(deadline+'T23:59:00')<new Date(new Date().toDateString())){alert('締め切りは今日以降に設定してください。');return}
- tasks.push({id:Date.now()+Math.random(),name,deadline,total,unit,completed,minutes,priority});$('name').value='';$('total').value='';$('unit').value='';$('completed').value='0';renderTasks();saveData(false);
+
+function updateHeaderDate() {
+  const now = new Date();
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
+  const w = '日月火水木金土'[now.getDay()];
+  $('headerDate').textContent = `${m}月${d}日（${w}）`;
 }
-function renderTasks(){
- $('taskList').innerHTML=tasks.length?tasks.map(t=>`<div class="task"><div><strong>${esc(t.name)}</strong><small>期限 ${t.deadline} · 残り ${Math.max(0,t.total-t.completed)}${esc(t.unit)} · 約${Math.round((t.total-t.completed)*t.minutes/60*10)/10}時間</small></div><button class="del" onclick="removeTask('${t.id}')">削除</button></div>`).join(''):'<div class="empty">まだ課題が登録されていません。</div>';
+
+/* ===== Tab ===== */
+function switchTab(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  $(`view-${name}`).classList.add('active');
+  document.querySelector(`.tab[data-view="${name}"]`).classList.add('active');
+  if (name === 'today') renderToday();
+  if (name === 'goals') renderGoals();
+  if (name === 'schedule') renderSchedule();
 }
-function removeTask(id){tasks=tasks.filter(t=>String(t.id)!==String(id));renderTasks();saveData(false)}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function getHours(i){return Math.min(16,Math.max(0,Number($('h'+i).value)||0),Number($('cap').value)||16)}
-function copyWeekday(){let v=$('h1').value;[2,3,4,5].forEach(i=>$('h'+i).value=v)}
-function copyWeekend(){let a=$('h0').value,b=$('h6').value;$('h1').value=a;$('h2').value=a;$('h3').value=a;$('h4').value=b;$('h5').value=b}
-function generate(){
- if(!tasks.length){alert('先に課題を1つ以上登録してください。');return}
- const today=new Date();today.setHours(0,0,0,0);
- const active=tasks.filter(t=>t.completed<t.total);
- if(!active.length){alert('登録した課題はすべて完了しています！');return}
- const horizon=Math.min(90,Math.max(...active.map(t=>Math.ceil((new Date(t.deadline+'T23:59:00')-today)/86400000)))+1);
- let days=[];
- for(let k=0;k<horizon;k++){let date=new Date(today);date.setDate(today.getDate()+k);let h=getHours(date.getDay());days.push({date,h,start:$('t'+date.getDay()).value||'17:00',items:[]})}
- const warnings=[];
- active.forEach(t=>{
-   const last=Math.floor((new Date(t.deadline+'T23:59:00')-today)/86400000);
-   if(last<0){warnings.push(`${t.name}：締め切りを過ぎています。期限を見直してください。`);return}
-   const available=days.slice(0,last+1).filter(d=>d.h>0);
-   if(!available.length){warnings.push(`${t.name}：締め切りまでに勉強できる日が設定されていません。`);return}
-   const units=t.total-t.completed, totalMinutes=units*t.minutes;
-   const weights=available.map((d,i)=>Math.max(.35,1-(i/Math.max(1,available.length-1))*.12));
-   const sum=weights.reduce((a,b)=>a+b,0);
-   let assigned=0;
-   available.forEach((d,i)=>{
-     let mins=i===available.length-1?totalMinutes-assigned:Math.round(totalMinutes*weights[i]/sum);
-     assigned+=mins;
-     d.items.push({taskId:t.id,name:t.name,minutes:mins,units:Math.max(0,Math.round(mins/t.minutes)),unit:t.unit,priority:t.priority});
-   });
- });
- // Keep each day's total within available capacity by scaling that day's allocation; show overload warnings.
- days.forEach(d=>{
-   const total=d.items.reduce((s,x)=>s+x.minutes,0), cap=d.h*60;
-   if(total>cap&&cap>0){
-     d.items.forEach(x=>{x.minutes=Math.floor(x.minutes*cap/total);x.units=Math.floor(x.minutes/(active.find(t=>t.id===x.taskId)?.minutes||1))});
-   }
- });
- const totalHours=active.reduce((s,t)=>s+(t.total-t.completed)*t.minutes/60,0);
- const availableHours=days.reduce((s,d)=>s+d.h,0);
- if(totalHours>availableHours)warnings.push(`必要な勉強時間は約${totalHours.toFixed(1)}時間、設定した期間内の勉強可能時間は約${availableHours.toFixed(1)}時間です。期限までに終わらない可能性があります。`);
- $('summary').innerHTML=`<div class="stat"><small>残りの学習量</small><b>${totalHours.toFixed(1)}h</b></div><div class="stat"><small>計画期間</small><b>${horizon}日</b></div><div class="stat"><small>勉強可能時間</small><b>${availableHours.toFixed(1)}h</b></div>`;
- $('warnings').innerHTML=warnings.map(w=>`<div class="notice">⚠ ${esc(w)}</div>`).join('');
- $('plans').innerHTML=days.map((d,idx)=>{
-   const date=d.date, label=`${date.getMonth()+1}/${date.getDate()}（${'日月火水木金土'[date.getDay()]}）`;
-   const sum=d.items.reduce((s,x)=>s+x.minutes,0);
-   return `<div class="dayplan"><div class="dayhead"><b>${idx===0?'今日 · ':''}${label}</b><span>${(sum/60).toFixed(1)}h / 勉強可能 ${(d.h).toFixed(1)}h</span></div>${d.items.length?d.items.map((x,i)=>`<label class="planitem"><input type="checkbox" onchange="completeItem(this,'${x.taskId}',${x.units})"><div><strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong><small>${slotLabel(d,i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small></div></label>`).join(''):'<div class="empty">休息日・予備日</div>'}</div>`
- }).join('');
- $('output').style.display='block';plan=days;saveData(false);
+
+/* ===== Goals ===== */
+function openGoalModal(id = null) {
+  editingId = id;
+  $('modalTitle').textContent = id ? '目標を編集' : '目標を追加';
+  if (id) {
+    const t = tasks.find(x => String(x.id) === String(id));
+    if (!t) return;
+    $('g-name').value = t.name;
+    $('g-deadline').value = t.deadline;
+    $('g-priority').value = t.priority;
+    $('g-total').value = t.total;
+    $('g-unit').value = t.unit;
+    $('g-completed').value = t.completed;
+    $('g-minutes').value = t.minutes;
+  } else {
+    $('g-name').value = '';
+    $('g-deadline').value = '';
+    $('g-priority').value = '1';
+    $('g-total').value = '';
+    $('g-unit').value = '';
+    $('g-completed').value = '0';
+    $('g-minutes').value = '5';
+  }
+  $('goalModal').classList.add('show');
 }
-function slotLabel(day,index){
- const base=(day.start||'17:00').split(':').map(Number);
- let mins=base[0]*60+base[1]+day.items.slice(0,index).reduce((s,x)=>s+x.minutes,0);
- const end=mins+day.items[index].minutes;
- const fmt=n=>String(Math.floor(n/60)%24).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
- return fmt(mins)+'〜'+fmt(end);
+
+function closeGoalModal() {
+  $('goalModal').classList.remove('show');
+  editingId = null;
 }
-function completeItem(box,id,units){
- if(!box.checked)return;
- const t=tasks.find(t=>String(t.id)===String(id));if(t){t.completed=Math.min(t.total,t.completed+units);renderTasks();saveData(false);box.parentElement.classList.add('done');box.disabled=true}
+
+function saveGoal() {
+  const name = $('g-name').value.trim();
+  const deadline = $('g-deadline').value;
+  const total = Number($('g-total').value);
+  const unit = $('g-unit').value.trim() || '個';
+  const completed = Number($('g-completed').value || 0);
+  const minutes = Number($('g-minutes').value);
+  const priority = Number($('g-priority').value);
+
+  if (!name || !deadline || !total || total < 1 || !minutes || completed < 0 || completed > total) {
+    alert('目標名・締め切り・全体の量・所要時間を正しく入力してください。');
+    return;
+  }
+  if (new Date(deadline + 'T23:59:00') < new Date(new Date().toDateString())) {
+    alert('締め切りは今日以降に設定してください。');
+    return;
+  }
+
+  if (editingId) {
+    const t = tasks.find(x => String(x.id) === String(editingId));
+    if (t) {
+      Object.assign(t, { name, deadline, total, unit, completed, minutes, priority });
+    }
+  } else {
+    tasks.push({
+      id: Date.now() + Math.random(),
+      name, deadline, total, unit, completed, minutes, priority
+    });
+  }
+  closeGoalModal();
+  saveData();
+  renderGoals();
+  renderToday();
 }
-function saveData(show=true){
- const data={tasks,days:dayNames.map((_,i)=>({hours:Number($('h'+i).value),start:$('t'+i).value})),cap:$('cap').value};
- localStorage.setItem('studyflow-data',JSON.stringify(data));
- if(show)$('message').textContent='このブラウザに設定を保存しました。';
+
+function removeGoal(id) {
+  if (!confirm('この目標を削除しますか？')) return;
+  tasks = tasks.filter(t => String(t.id) !== String(id));
+  saveData();
+  renderGoals();
+  renderToday();
 }
-function loadData(){
- initDays();const raw=localStorage.getItem('studyflow-data');if(!raw)return;
- try{const d=JSON.parse(raw);tasks=d.tasks||[];(d.days||[]).forEach((v,i)=>{if($('h'+i)){ $('h'+i).value=typeof v==='object'?v.hours:v; if(typeof v==='object'&&v.start)$('t'+i).value=v.start; }});if(d.cap)$('cap').value=d.cap;renderTasks()}catch(e){}
+
+function renderGoals() {
+  const list = $('goalsList');
+  if (!tasks.length) {
+    list.innerHTML = `
+      <div class="empty-card">
+        <h3>最初の目標</h3>
+        <p>たとえば、12月20日までに英単語2000語。</p>
+        <button class="btn btn-primary" onclick="openGoalModal()">目標を追加</button>
+      </div>`;
+    return;
+  }
+  list.innerHTML = tasks.map(t => {
+    const remain = Math.max(0, t.total - t.completed);
+    const hours = Math.round(remain * t.minutes / 60 * 10) / 10;
+    return `
+      <div class="goal-item">
+        <div class="info" onclick="openGoalModal('${t.id}')" style="cursor:pointer">
+          <div class="name">${esc(t.name)}</div>
+          <div class="meta">期限 ${t.deadline} · 残り ${remain}${esc(t.unit)} · 約${hours}時間</div>
+        </div>
+        <button class="del" onclick="removeGoal('${t.id}')">削除</button>
+      </div>`;
+  }).join('');
 }
-function resetAll(){if(confirm('登録内容をすべて削除しますか？')){localStorage.removeItem('studyflow-data');tasks=[];initDays();renderTasks();$('output').style.display='none'}}
-loadData();
+
+/* ===== Schedule ===== */
+function getDayHours(dayIndex) {
+  return schedule[dayIndex].reduce((sum, s) => {
+    const [sh, sm] = s.start.split(':').map(Number);
+    const [eh, em] = s.end.split(':').map(Number);
+    let mins = (eh * 60 + em) - (sh * 60 + sm);
+    if (mins < 0) mins += 24 * 60;
+    return sum + Math.max(0, mins) / 60;
+  }, 0);
+}
+
+function getWeekTotalHours() {
+  return schedule.reduce((sum, _, i) => sum + getDayHours(i), 0);
+}
+
+function renderSchedule() {
+  const total = getWeekTotalHours();
+  $('weekSummary').innerHTML = total > 0
+    ? `1週間の空き <span style="color:var(--ink)">${total.toFixed(1)}時間</span>`
+    : `1週間の空き <span class="status">未設定</span>`;
+
+  const weekdays = [1,2,3,4,5];
+  const weekend = [6,0];
+
+  $('weekdayList').innerHTML = weekdays.map(i => renderDayCard(i)).join('');
+  $('weekendList').innerHTML = weekend.map(i => renderDayCard(i)).join('');
+}
+
+function renderDayCard(i) {
+  const hours = getDayHours(i);
+  const slots = schedule[i];
+  const status = hours > 0 ? `${hours.toFixed(1)}時間` : '勉強しない';
+
+  let slotsHtml = '';
+  if (slots.length === 0) {
+    slotsHtml = `<div class="no-slot">この曜日は空きがありません。</div>`;
+  } else {
+    slotsHtml = slots.map((s, si) => `
+      <div class="slot-row">
+        <div class="field">
+          <label>開始</label>
+          <input type="time" value="${s.start}" onchange="updateSlot(${i},${si},'start',this.value)">
+        </div>
+        <div class="field">
+          <label>終了</label>
+          <input type="time" value="${s.end}" onchange="updateSlot(${i},${si},'end',this.value)">
+        </div>
+        <button class="btn-remove-slot" onclick="removeSlot(${i},${si})" aria-label="削除">×</button>
+      </div>
+    `).join('');
+  }
+
+  return `
+    <div class="day-card">
+      <div class="day-card-head">
+        <span class="day-name">${dayNames[i]}</span>
+        <span class="status">${status}</span>
+      </div>
+      ${slotsHtml}
+      <button class="btn-add-slot" onclick="addSlot(${i})">枠を追加</button>
+    </div>`;
+}
+
+function addSlot(dayIndex) {
+  const defaults = {
+    0: {start:'09:00', end:'12:00'},
+    1: {start:'17:00', end:'20:00'},
+    2: {start:'17:00', end:'20:00'},
+    3: {start:'17:00', end:'20:00'},
+    4: {start:'17:00', end:'20:00'},
+    5: {start:'17:00', end:'20:00'},
+    6: {start:'09:00', end:'12:00'}
+  };
+  schedule[dayIndex].push({ ...defaults[dayIndex] });
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+function removeSlot(dayIndex, slotIndex) {
+  schedule[dayIndex].splice(slotIndex, 1);
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+function updateSlot(dayIndex, slotIndex, key, value) {
+  schedule[dayIndex][slotIndex][key] = value;
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+function copyWeekday() {
+  const src = schedule[1].map(s => ({...s}));
+  [2,3,4,5].forEach(i => { schedule[i] = src.map(s => ({...s})); });
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+function copyWeekend() {
+  const src = schedule[6].map(s => ({...s}));
+  schedule[0] = src.map(s => ({...s}));
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+function fillExample() {
+  schedule = [
+    [{start:'09:00', end:'12:00'}, {start:'14:00', end:'17:00'}], // Sun
+    [{start:'17:00', end:'21:00'}], // Mon
+    [{start:'17:00', end:'21:00'}],
+    [{start:'17:00', end:'21:00'}],
+    [{start:'17:00', end:'21:00'}],
+    [{start:'17:00', end:'21:00'}],
+    [{start:'09:00', end:'12:00'}, {start:'14:00', end:'18:00'}]  // Sat
+  ];
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+function clearAllSlots() {
+  if (!confirm('すべての勉強枠を消しますか？')) return;
+  schedule = Array.from({length:7}, () => []);
+  saveData();
+  renderSchedule();
+  renderToday();
+}
+
+/* ===== Today / Plan generation ===== */
+function getHoursForDate(date) {
+  return getDayHours(date.getDay());
+}
+
+function getStartTimeForDate(date) {
+  const slots = schedule[date.getDay()];
+  if (!slots.length) return '17:00';
+  return slots[0].start;
+}
+
+function generatePlan() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const active = tasks.filter(t => t.completed < t.total);
+  if (!active.length) return { days: [], warnings: [], totalHours: 0, availableHours: 0, horizon: 0 };
+
+  const horizon = Math.min(90, Math.max(...active.map(t =>
+    Math.ceil((new Date(t.deadline + 'T23:59:00') - today) / 86400000)
+  )) + 1);
+
+  let days = [];
+  for (let k = 0; k < horizon; k++) {
+    let date = new Date(today);
+    date.setDate(today.getDate() + k);
+    let h = getHoursForDate(date);
+    days.push({
+      date,
+      h,
+      start: getStartTimeForDate(date),
+      items: []
+    });
+  }
+
+  const warnings = [];
+  active.forEach(t => {
+    const last = Math.floor((new Date(t.deadline + 'T23:59:00') - today) / 86400000);
+    if (last < 0) {
+      warnings.push(`${t.name}：締め切りを過ぎています。`);
+      return;
+    }
+    const available = days.slice(0, last + 1).filter(d => d.h > 0);
+    if (!available.length) {
+      warnings.push(`${t.name}：締め切りまでに勉強できる日がありません。`);
+      return;
+    }
+    const units = t.total - t.completed;
+    const totalMinutes = units * t.minutes;
+    // weight slightly more toward earlier days
+    const weights = available.map((_, i) => Math.max(0.35, 1 - (i / Math.max(1, available.length - 1)) * 0.15));
+    const sumW = weights.reduce((a,b) => a+b, 0);
+    let assigned = 0;
+    available.forEach((d, i) => {
+      let mins = i === available.length - 1
+        ? totalMinutes - assigned
+        : Math.round(totalMinutes * weights[i] / sumW);
+      assigned += mins;
+      d.items.push({
+        taskId: t.id,
+        name: t.name,
+        minutes: mins,
+        units: Math.max(0, Math.round(mins / t.minutes)),
+        unit: t.unit,
+        priority: t.priority
+      });
+    });
+  });
+
+  // scale down if over capacity
+  days.forEach(d => {
+    const total = d.items.reduce((s,x) => s + x.minutes, 0);
+    const cap = d.h * 60;
+    if (total > cap && cap > 0) {
+      d.items.forEach(x => {
+        x.minutes = Math.floor(x.minutes * cap / total);
+        const t = active.find(tt => tt.id === x.taskId);
+        x.units = Math.floor(x.minutes / (t?.minutes || 1));
+      });
+    }
+  });
+
+  const totalHours = active.reduce((s,t) => s + (t.total - t.completed) * t.minutes / 60, 0);
+  const availableHours = days.reduce((s,d) => s + d.h, 0);
+  if (totalHours > availableHours + 0.1) {
+    warnings.push(`必要な勉強時間は約${totalHours.toFixed(1)}時間、設定した期間内の勉強可能時間は約${availableHours.toFixed(1)}時間です。期限までに終わらない可能性があります。`);
+  }
+
+  return { days, warnings, totalHours, availableHours, horizon };
+}
+
+function slotLabel(day, index) {
+  const base = (day.start || '17:00').split(':').map(Number);
+  let mins = base[0] * 60 + base[1] + day.items.slice(0, index).reduce((s,x) => s + x.minutes, 0);
+  const end = mins + day.items[index].minutes;
+  const fmt = n => String(Math.floor(n/60)%24).padStart(2,'0') + ':' + String(n%60).padStart(2,'0');
+  return fmt(mins) + '〜' + fmt(end);
+}
+
+function renderToday() {
+  const content = $('todayContent');
+  const active = tasks.filter(t => t.completed < t.total);
+
+  if (!tasks.length) {
+    content.innerHTML = `
+      <div class="empty-card">
+        <h3>目標は、まだありません</h3>
+        <p>期限と量を入れると、今日やる分を逆算します。</p>
+        <button class="btn btn-primary" onclick="switchTab('goals'); openGoalModal()">目標を追加</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <small>今日の空き</small>
+          <b>${getHoursForDate(new Date()) > 0 ? getHoursForDate(new Date()).toFixed(1) + 'h' : '未設定'}</b>
+        </div>
+        <div class="stat-box">
+          <small>残っている目標</small>
+          <b>0</b>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (!active.length) {
+    content.innerHTML = `
+      <div class="empty-card">
+        <h3>すべて完了しています！</h3>
+        <p>新しい目標を追加するか、既存の目標を編集してください。</p>
+      </div>`;
+    return;
+  }
+
+  const plan = generatePlan();
+  const todayPlan = plan.days[0] || { items: [], h: 0, date: new Date() };
+
+  let html = '';
+
+  if (plan.warnings.length) {
+    html += plan.warnings.map(w => `<div class="notice">⚠ ${esc(w)}</div>`).join('');
+  }
+
+  // Today block
+  html += `<div class="day-block">`;
+  html += `<div class="day-head"><b>今日</b><span>${(todayPlan.items.reduce((s,x)=>s+x.minutes,0)/60).toFixed(1)}h / 空き ${todayPlan.h.toFixed(1)}h</span></div>`;
+
+  if (!todayPlan.items.length) {
+    html += `<div class="plan-empty">${todayPlan.h > 0 ? '今日の割り当てはありません' : '今日は勉強枠が設定されていません'}</div>`;
+  } else {
+    html += todayPlan.items.map((x, i) => `
+      <label class="plan-item">
+        <input type="checkbox" onchange="completeItem(this, '${x.taskId}', ${x.units})">
+        <div class="text">
+          <strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong>
+          <small>${slotLabel(todayPlan, i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small>
+        </div>
+      </label>
+    `).join('');
+  }
+  html += `</div>`;
+
+  // Stats
+  html += `
+    <div class="stats-row">
+      <div class="stat-box">
+        <small>今日の空き</small>
+        <b>${todayPlan.h > 0 ? todayPlan.h.toFixed(1) + 'h' : '未設定'}</b>
+      </div>
+      <div class="stat-box">
+        <small>残っている目標</small>
+        <b>${active.length}</b>
+      </div>
+    </div>
+    <div class="stats-row" style="margin-top:12px">
+      <div class="stat-box">
+        <small>残り総時間</small>
+        <b>${plan.totalHours.toFixed(1)}h</b>
+      </div>
+      <div class="stat-box">
+        <small>計画期間</small>
+        <b>${plan.horizon}日</b>
+      </div>
+    </div>`;
+
+  // Upcoming days (next 6 days)
+  const upcoming = plan.days.slice(1, 7);
+  if (upcoming.some(d => d.items.length)) {
+    html += `<div style="margin-top:28px; margin-bottom:10px; font-size:13px; color:var(--muted)">これから数日</div>`;
+    upcoming.forEach(d => {
+      if (!d.items.length && d.h === 0) return;
+      const label = `${d.date.getMonth()+1}/${d.date.getDate()}（${'日月火水木金土'[d.date.getDay()]}）`;
+      const sum = d.items.reduce((s,x) => s + x.minutes, 0);
+      html += `<div class="day-block">
+        <div class="day-head"><b>${label}</b><span>${(sum/60).toFixed(1)}h / 空き ${d.h.toFixed(1)}h</span></div>
+        ${d.items.length
+          ? d.items.map((x,i) => `
+            <div class="plan-item">
+              <div class="text" style="margin-left:0">
+                <strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong>
+                <small>${slotLabel(d,i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small>
+              </div>
+            </div>`).join('')
+          : `<div class="plan-empty">休息日・予備日</div>`}
+      </div>`;
+    });
+  }
+
+  content.innerHTML = html;
+}
+
+function completeItem(box, id, units) {
+  if (!box.checked) return;
+  const t = tasks.find(t => String(t.id) === String(id));
+  if (t) {
+    t.completed = Math.min(t.total, t.completed + units);
+    saveData();
+    box.parentElement.classList.add('done');
+    box.disabled = true;
+    // re-render after short delay so user sees the check
+    setTimeout(() => {
+      renderGoals();
+      renderToday();
+    }, 400);
+  }
+}
+
+/* ===== Storage ===== */
+function saveData() {
+  const data = { tasks, schedule };
+  localStorage.setItem('studyflow-v2', JSON.stringify(data));
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem('studyflow-v2');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    tasks = d.tasks || [];
+    if (d.schedule && Array.isArray(d.schedule) && d.schedule.length === 7) {
+      schedule = d.schedule;
+    }
+  } catch(e) {}
+}
+
+function confirmReset() {
+  if (confirm('すべての目標と予定を削除してリセットしますか？')) {
+    localStorage.removeItem('studyflow-v2');
+    tasks = [];
+    schedule = Array.from({length:7}, () => []);
+    renderGoals();
+    renderSchedule();
+    renderToday();
+  }
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
+  );
+}
+
+// close modal on overlay click
+$('goalModal').addEventListener('click', e => {
+  if (e.target === $('goalModal')) closeGoalModal();
+});
+
+init();
 </script>
-</body></html>
+</body>
+</html>
