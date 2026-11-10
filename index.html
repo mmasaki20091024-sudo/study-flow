@@ -275,13 +275,15 @@ body {
 .day-head b { font-size: 14px; font-weight: 600; }
 .day-head span { font-size: 12px; color: var(--muted); }
 .plan-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--line);
 }
 .plan-item:last-child { border-bottom: none; }
+.plan-item .top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
 .plan-item input[type="checkbox"] {
   width: 20px;
   height: 20px;
@@ -310,6 +312,44 @@ body {
   color: var(--muted);
   font-size: 13px;
 }
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-left: 32px;
+}
+.progress-row input {
+  width: 80px;
+  background: #111;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: var(--ink);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+}
+.progress-row input:focus { border-color: #555; }
+.progress-row .unit-label {
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 28px;
+}
+.progress-row .btn-record {
+  background: var(--accent);
+  color: var(--accent-text);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.progress-row .btn-record:active { opacity: 0.85; }
 
 /* ===== Schedule (予定) ===== */
 .week-summary {
@@ -930,8 +970,8 @@ function generatePlan() {
     }
     const units = t.total - t.completed;
     const totalMinutes = units * t.minutes;
-    // weight slightly more toward earlier days
-    const weights = available.map((_, i) => Math.max(0.35, 1 - (i / Math.max(1, available.length - 1)) * 0.15));
+    // 各日の勉強可能時間に比例して配分 → 負担率（勉強時間/空き時間）を揃える
+    const weights = available.map(d => Math.max(d.h, 0.01));
     const sumW = weights.reduce((a,b) => a+b, 0);
     let assigned = 0;
     available.forEach((d, i) => {
@@ -1030,13 +1070,20 @@ function renderToday() {
     html += `<div class="plan-empty">${todayPlan.h > 0 ? '今日の割り当てはありません' : '今日は勉強枠が設定されていません'}</div>`;
   } else {
     html += todayPlan.items.map((x, i) => `
-      <label class="plan-item">
-        <input type="checkbox" onchange="completeItem(this, '${x.taskId}', ${x.units})">
-        <div class="text">
-          <strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong>
-          <small>${slotLabel(todayPlan, i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small>
+      <div class="plan-item" id="plan-${x.taskId}">
+        <div class="top">
+          <input type="checkbox" onchange="completeItem(this, '${x.taskId}', ${x.units})" aria-label="予定どおり完了">
+          <div class="text">
+            <strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong>
+            <small>${slotLabel(todayPlan, i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small>
+          </div>
         </div>
-      </label>
+        <div class="progress-row">
+          <input type="number" min="0" step="1" inputmode="numeric" placeholder="${x.units}" id="prog-${x.taskId}" aria-label="今日やった量">
+          <span class="unit-label">${esc(x.unit)}</span>
+          <button class="btn-record" onclick="recordProgress('${x.taskId}')">記録</button>
+        </div>
+      </div>
     `).join('');
   }
   html += `</div>`;
@@ -1096,14 +1143,38 @@ function completeItem(box, id, units) {
   if (t) {
     t.completed = Math.min(t.total, t.completed + units);
     saveData();
-    box.parentElement.classList.add('done');
+    const item = document.getElementById('plan-' + id);
+    if (item) item.classList.add('done');
     box.disabled = true;
-    // re-render after short delay so user sees the check
     setTimeout(() => {
       renderGoals();
       renderToday();
-    }, 400);
+    }, 350);
   }
+}
+
+function recordProgress(id) {
+  const input = document.getElementById('prog-' + id);
+  if (!input) return;
+  const amount = Number(input.value);
+  if (!amount || amount <= 0) {
+    alert('終わった量を入力してください。');
+    return;
+  }
+  const t = tasks.find(t => String(t.id) === String(id));
+  if (!t) return;
+  t.completed = Math.min(t.total, t.completed + amount);
+  saveData();
+  input.value = '';
+  // 軽いフィードバック
+  const item = document.getElementById('plan-' + id);
+  if (item) {
+    item.style.opacity = '0.6';
+  }
+  setTimeout(() => {
+    renderGoals();
+    renderToday();
+  }, 300);
 }
 
 /* ===== Storage ===== */
