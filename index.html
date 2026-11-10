@@ -1069,13 +1069,19 @@ function renderToday() {
   if (!todayPlan.items.length) {
     html += `<div class="plan-empty">${todayPlan.h > 0 ? '今日の割り当てはありません' : '今日は勉強枠が設定されていません'}</div>`;
   } else {
-    html += todayPlan.items.map((x, i) => `
+    html += todayPlan.items.map((x, i) => {
+      const t = tasks.find(tt => String(tt.id) === String(x.taskId));
+      const start = t ? (t.completed + 1) : 1;
+      const end = start + x.units - 1;
+      const rangeLabel = x.units > 0 ? `${start}〜${end}${esc(x.unit)}` : `0${esc(x.unit)}`;
+      return `
       <div class="plan-item" id="plan-${x.taskId}">
         <div class="top">
           <input type="checkbox" onchange="completeItem(this, '${x.taskId}', ${x.units})" aria-label="予定どおり完了">
           <div class="text">
-            <strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong>
-            <small>${slotLabel(todayPlan, i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small>
+            <strong>${esc(x.name)}</strong>
+            <small style="display:block;margin-top:4px;font-size:14px;color:var(--ink);font-weight:500">${rangeLabel}</small>
+            <small>${slotLabel(todayPlan, i)} · 目安 ${(x.minutes/60).toFixed(1)}時間 · 今日 ${x.units}${esc(x.unit)}</small>
           </div>
         </div>
         <div class="progress-row">
@@ -1083,8 +1089,8 @@ function renderToday() {
           <span class="unit-label">${esc(x.unit)}</span>
           <button class="btn-record" onclick="recordProgress('${x.taskId}')">記録</button>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
   html += `</div>`;
 
@@ -1125,7 +1131,8 @@ function renderToday() {
           ? d.items.map((x,i) => `
             <div class="plan-item">
               <div class="text" style="margin-left:0">
-                <strong>${esc(x.name)}：${x.units}${esc(x.unit)}</strong>
+                <strong>${esc(x.name)}</strong>
+                <small style="display:block;margin-top:3px;color:var(--ink)">${x.units}${esc(x.unit)}</small>
                 <small>${slotLabel(d,i)} · 目安 ${(x.minutes/60).toFixed(1)}時間</small>
               </div>
             </div>`).join('')
